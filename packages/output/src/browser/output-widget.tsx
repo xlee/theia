@@ -132,13 +132,17 @@ export class OutputWidget extends ReactWidget {
 
     protected onUpdateRequest(msg: Message): void {
         super.onUpdateRequest(msg);
+        const { selectedChannel } = this.outputChannelManager;
+        const lockedAtLine = selectedChannel && selectedChannel.lockedAtLine || false;
         setTimeout(() => {
-            const div = document.getElementById(OutputWidget.IDs.CONTENTS) as HTMLDivElement;
+            const div = document.getElementById(OutputWidget.IDs.CONTENTS);
             if (div && div.children.length > 0) {
-                div.children[div.children.length - 1].scrollIntoView(false);
+                const childIndexToScroll = lockedAtLine ? lockedAtLine : div.children.length - 1;
+                div.children[childIndexToScroll].scrollIntoView(false);
             }
         });
     }
+
 }
 
 export namespace OutputWidget {
